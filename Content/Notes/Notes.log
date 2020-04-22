@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.11)  22 APR 2020 23:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.11)  23 APR 2020 00:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -728,14 +728,14 @@ Package caption Info: End \AtBeginDocument code.
 \openout4 = `Notes.toc'.
 
  [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 107.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 109.
  [2
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 107.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 109.
  (/Users/michaellin/Desktop/Influentials/Content/Notes/Notes.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 107.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 107.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 109.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 109.
 Package rerunfilecheck Info: File `Notes.out' has not changed.
 (rerunfilecheck)             Checksum: 6E43FBF155186381E956DAAD2184C97F;275.
  ) 
