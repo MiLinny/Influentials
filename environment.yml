@@ -32,3 +32,4 @@ dependencies:
   - cachey
   - python-graphviz
   - zarr
+  - tqdm
