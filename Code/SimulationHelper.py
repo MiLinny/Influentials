@@ -133,7 +133,7 @@ def update_influence_directed(G, node, phi, time, label='is_influenced'):
     num_friends = len(friends)
 
     ## Node with no friends cannot be influenced
-    if num_friends == 0:s
+    if num_friends == 0:
         return False
 
     ## Calculate the number of friends who can influence 
