@@ -1,2 +1,3 @@
 /Code/dask-worker-space/*
 /Code/.ipynb_checkpoints
+.DS_Store
