@@ -17,8 +17,7 @@ def set_time(G, value, node=None, time='time'):
     if node:
         G.nodes[node][time] = value
     else:
-        N = G.number_of_nodes()
-        time_attrib = {i : value for i in range(N)}
+        time_attrib = {i : value for i in G.nodes()}
         nx.set_node_attributes(G,time_attrib, time)
 
 
@@ -33,8 +32,7 @@ def set_influence(G, value, node=None, label='is_influenced'):
     if node:
         G.nodes[node][label] = value
     else:
-        N = G.number_of_nodes()
-        influence_attrib = { i : value for i in range(N) }
+        influence_attrib = { i : value for i in G.nodes() }
         nx.set_node_attributes(G,influence_attrib, label)
         
 def get_is_influenced(G, node, label='is_influenced'):
@@ -135,7 +133,7 @@ def update_influence_directed(G, node, phi, time, label='is_influenced'):
     num_friends = len(friends)
 
     ## Node with no friends cannot be influenced
-    if num_friends == 0:
+    if num_friends == 0:s
         return False
 
     ## Calculate the number of friends who can influence 
