@@ -184,7 +184,43 @@ def simulate_spread_directed(G, initial_node, phi):
 ############################# Simulation  Functions #############################
 #################################################################################
 
-def 
+def run_simulation(G, phi=0.18, q=0.1, directed=False):
+    '''
+        Simulation of influential cascade on network G.
+        Returns the average size of influenced nodes and average expected 
+        time to be influenced from 
+            - influential nodes
+            - normal nodes
+    '''
+    set_influence(G, 0)
+    set_time(G, 0)
+    
+    degree_ordered_nodes = sorted(list(G.nodes()), key=lambda x: G.degree(x), reverse=True)
+    N = G.number_of_nodes()
+    influential_nodes = degree_ordered_nodes[:int(q*N)]
+    
+    average = np.mean(list(dict(G.degree()).values()))
+    lower, upper = int(np.floor(average)), int(np.ceil(average))
+    normal_nodes = [x for x in G.nodes() if lower <= G.degree(x) <= upper ]
+    
+    influential_S, influential_t = [], []
+    normal_S, normal_t = [], []
+    
+    ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
+    ## for each influential node
+    for node in influential_nodes:
+        S, t = simulate_spread_directed(G, node, phi) if directed else simulate_spread(G, node, phi)
+        influential_S.append(S)
+        influential_t.append(t)
+        
+    ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
+    ## for each normal node
+    for node in normal_nodes:
+        S, t = simulate_spread_directed(G, node, phi) if directed else simulate_spread(G, node, phi)
+        normal_S.append(S)
+        normal_t.append(t)
+
+    return [np.mean(influential_S), np.mean(normal_S), np.mean(influential_t), np.mean(normal_t)]
 
 def run_simulation_RG_directed(N,p,phi=0.18,q=0.1):
     '''
