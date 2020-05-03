@@ -184,6 +184,8 @@ def simulate_spread_directed(G, initial_node, phi):
 ############################# Simulation  Functions #############################
 #################################################################################
 
+def 
+
 def run_simulation_RG_directed(N,p,phi=0.18,q=0.1):
     '''
         Simulation of Poisson/Binomial Random Graph
