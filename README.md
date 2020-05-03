@@ -10,3 +10,9 @@ Install Miniconda/Anaconda and run the following commmand in terminal within the
 
 
     
+    
+## Sources
+
+### Twitter Data
+Twitter data was sourced from https://snap.stanford.edu/data/ego-Twitter.html.
+
