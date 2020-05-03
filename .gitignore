@@ -1,3 +1,4 @@
 /Code/dask-worker-space/*
 /Code/.ipynb_checkpoints
+/Code/__pycache__
 .DS_Store
