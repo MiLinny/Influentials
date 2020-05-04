@@ -197,14 +197,21 @@ def run_simulation(G, phi=0.18, q=0.1, directed=False):
     
     degree_ordered_nodes = sorted(list(G.nodes()), key=lambda x: G.degree(x), reverse=True)
     N = G.number_of_nodes()
-    influential_nodes = degree_ordered_nodes[:int(q*N)]
+    degree_ordered_nodes = sorted(list(G.nodes()), key=lambda x: G.degree(x), reverse=True)
+    influential_nodes_5   = degree_ordered_nodes[:int(0.05*N)]
+    influential_nodes_10  = degree_ordered_nodes[int(0.05*N):int(0.1*N)]
+    influential_nodes_15 = degree_ordered_nodes[int(0.1*N):int(0.15*N)]
+    influential_nodes_20 = degree_ordered_nodes[int(0.15*N):int(0.2*N)]
+    bottom_nodes = degree_ordered_nodes[int(0.9*N):]
     
     average = np.mean(list(dict(G.degree()).values()))
     lower, upper = int(np.floor(average)), int(np.ceil(average))
     normal_nodes = [x for x in G.nodes() if lower <= G.degree(x) <= upper ]
     
-    influential_S, influential_t = [], []
-    normal_S, normal_t = [], []
+    influential_S_5, influential_S_10, influential_S_15, influential_S_20 = [], [], [], []
+    influential_t_5, influential_t_10, influential_t_15, influential_t_20 = [], [], [], []
+    normal_S, bottom_S = [], []
+    normal_t, bottom_t = [], []
     
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
@@ -220,9 +227,10 @@ def run_simulation(G, phi=0.18, q=0.1, directed=False):
         normal_S.append(S)
         normal_t.append(t)
 
-    return [np.mean(influential_S), np.mean(normal_S), np.mean(influential_t), np.mean(normal_t)]
+    return [np.mean(influential_S_5), np.mean(influential_S_10), np.mean(influential_S_15), np.mean(influential_S_20), np.mean(influential_S_5 + influential_S_10), np.mean(influential_S_5 + influential_S_10 + influential_S_15), np.mean(influential_S_5 + influential_S_10 + influential_S_15 + influential_S_20), np.mean(normal_S), np.mean(bottom_S),
+            np.mean(influential_t_5), np.mean(influential_t_10), np.mean(influential_t_15), np.mean(influential_t_20), np.mean(influential_t_5 + influential_t_10), np.mean(influential_t_5 + influential_t_10 + influential_t_15), np.mean(influential_t_5 + influential_t_10 + influential_t_15 + influential_t_20), np.mean(normal_t), np.mean(bottom_t)]
 
-def run_simulation_RG_directed(N,p,phi=0.18,q=0.1):
+def run_simulation_RG_directed(N,p,phi=0.18):
     '''
         Simulation of Poisson/Binomial Random Graph
         Returns the average size of influenced nodes and average expected 
@@ -236,35 +244,54 @@ def run_simulation_RG_directed(N,p,phi=0.18,q=0.1):
     
     ## Retrieve influential nodes - top q% and non-influential nodes
     degree_ordered_nodes = sorted(list(G.nodes()), key=lambda x: G.degree(x), reverse=True)
-    influential_nodes = degree_ordered_nodes[:int(q*N)]
-#     normal_nodes = degree_ordered_nodes[int(q*N):]
-    
+    influential_nodes_5   = degree_ordered_nodes[:int(0.05*N)]
+    influential_nodes_10  = degree_ordered_nodes[int(0.05*N):int(0.1*N)]
+    influential_nodes_15 = degree_ordered_nodes[int(0.1*N):int(0.15*N)]
+    influential_nodes_20 = degree_ordered_nodes[int(0.15*N):int(0.2*N)]
+    bottom_nodes = degree_ordered_nodes[int(0.9*N):]
+        
     average = p * (N-1)
     lower, upper = int(np.floor(average)), int(np.ceil(average))
     normal_nodes = [x for x in G.nodes() if lower <= G.degree(x) <= upper ]
 
-    influential_S = []
-    influential_t = []
-    normal_S = []
-    normal_t = []
+    influential_S_5, influential_S_10, influential_S_15, influential_S_20 = [], [], [], []
+    influential_t_5, influential_t_10, influential_t_15, influential_t_20 = [], [], [], []
+    normal_S, bottom_S = [], []
+    normal_t, bottom_t = [], []
     
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
-    for node in influential_nodes:
-        S, t = simulate_spread_directed(G, node, phi)
-        influential_S.append(S)
-        influential_t.append(t)
-        
-    ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
-    ## for each normal node
+    for node in influential_nodes_5:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)    
+    for node in influential_nodes_10:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_10.append(S)
+        influential_t_10.append(t)
+    for node in influential_nodes_15:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_15.append(S)
+        influential_t_15.append(t)
+    for node in influential_nodes_20:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_20.append(S)
+        influential_t_20.append(t)
+    for node in bottom_nodes:
+        S, t = simulate_spread(G, node, phi)
+        bottom_S.append(S)
+        bottom_t.append(t)
     for node in normal_nodes:
-        S, t = simulate_spread_directed(G, node, phi)
+        S, t = simulate_spread(G, node, phi)
         normal_S.append(S)
         normal_t.append(t)
+    
+    return [np.mean(influential_S_5), np.mean(influential_S_10), np.mean(influential_S_15), np.mean(influential_S_20), np.mean(influential_S_5 + influential_S_10), np.mean(influential_S_5 + influential_S_10 + influential_S_15), np.mean(influential_S_5 + influential_S_10 + influential_S_15 + influential_S_20), np.mean(normal_S), np.mean(bottom_S),
+            np.mean(influential_t_5), np.mean(influential_t_10), np.mean(influential_t_15), np.mean(influential_t_20), np.mean(influential_t_5 + influential_t_10), np.mean(influential_t_5 + influential_t_10 + influential_t_15), np.mean(influential_t_5 + influential_t_10 + influential_t_15 + influential_t_20), np.mean(normal_t), np.mean(bottom_t)]
 
-    return [np.mean(influential_S), np.mean(normal_S), np.mean(influential_t), np.mean(normal_t)]
 
-def run_simulation_RG(N,p,phi=0.18,q=0.1):
+
+def run_simulation_RG(N,p,phi=0.18):
     '''
         Simulation of Poisson/Binomial Random Graph
         Returns the average size of influenced nodes and average expected 
@@ -278,36 +305,53 @@ def run_simulation_RG(N,p,phi=0.18,q=0.1):
     
     ## Retrieve influential nodes - top q% and non-influential nodes
     degree_ordered_nodes = sorted(list(G.nodes()), key=lambda x: G.degree(x), reverse=True)
-    influential_nodes = degree_ordered_nodes[:int(q*N)]
-#     normal_nodes = degree_ordered_nodes[int(q*N):]
-    
+    influential_nodes_5   = degree_ordered_nodes[:int(0.05*N)]
+    influential_nodes_10  = degree_ordered_nodes[int(0.05*N):int(0.1*N)]
+    influential_nodes_15 = degree_ordered_nodes[int(0.1*N):int(0.15*N)]
+    influential_nodes_20 = degree_ordered_nodes[int(0.15*N):int(0.2*N)]
+    bottom_nodes = degree_ordered_nodes[int(0.9*N):]
+        
     average = p * (N-1)
     lower, upper = int(np.floor(average)), int(np.ceil(average))
     normal_nodes = [x for x in G.nodes() if lower <= G.degree(x) <= upper ]
 
-    influential_S = []
-    influential_t = []
-    normal_S = []
-    normal_t = []
+    influential_S_5, influential_S_10, influential_S_15, influential_S_20 = [], [], [], []
+    influential_t_5, influential_t_10, influential_t_15, influential_t_20 = [], [], [], []
+    normal_S, bottom_S = [], []
+    normal_t, bottom_t = [], []
     
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
-    for node in influential_nodes:
+    for node in influential_nodes_5:
         S, t = simulate_spread(G, node, phi)
-        influential_S.append(S)
-        influential_t.append(t)
-        
-    ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
-    ## for each normal node
+        influential_S_5.append(S)
+        influential_t_5.append(t)    
+    for node in influential_nodes_10:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_10.append(S)
+        influential_t_10.append(t)
+    for node in influential_nodes_15:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_15.append(S)
+        influential_t_15.append(t)
+    for node in influential_nodes_20:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_20.append(S)
+        influential_t_20.append(t)
+    for node in bottom_nodes:
+        S, t = simulate_spread(G, node, phi)
+        bottom_S.append(S)
+        bottom_t.append(t)
     for node in normal_nodes:
         S, t = simulate_spread(G, node, phi)
         normal_S.append(S)
         normal_t.append(t)
+    
+    return [np.mean(influential_S_5), np.mean(influential_S_10), np.mean(influential_S_15), np.mean(influential_S_20), np.mean(influential_S_5 + influential_S_10), np.mean(influential_S_5 + influential_S_10 + influential_S_15), np.mean(influential_S_5 + influential_S_10 + influential_S_15 + influential_S_20), np.mean(normal_S), np.mean(bottom_S),
+            np.mean(influential_t_5), np.mean(influential_t_10), np.mean(influential_t_15), np.mean(influential_t_20), np.mean(influential_t_5 + influential_t_10), np.mean(influential_t_5 + influential_t_10 + influential_t_15), np.mean(influential_t_5 + influential_t_10 + influential_t_15 + influential_t_20), np.mean(normal_t), np.mean(bottom_t)]
 
-    return [np.mean(influential_S), np.mean(normal_S), np.mean(influential_t), np.mean(normal_t)]
 
-
-def run_simulation_SF(N,n_avg,phi=0.18,q=0.1):
+def run_simulation_SF(N,n_avg,phi=0.18):
     '''
         Simulation of Scale Free Random Graphs
         Returns the average size of influenced nodes and average expected 
@@ -322,30 +366,47 @@ def run_simulation_SF(N,n_avg,phi=0.18,q=0.1):
     
     ## Retrieve influential nodes - top q% and non-influential nodes
     degree_ordered_nodes = sorted(list(G.nodes()), key=lambda x: G.degree(x), reverse=True)
-    influential_nodes = degree_ordered_nodes[:int(q*N)]
-#     normal_nodes = degree_ordered_nodes[int(q*N):]
+    influential_nodes_5   = degree_ordered_nodes[:int(0.05*N)]
+    influential_nodes_10  = degree_ordered_nodes[int(0.05*N):int(0.1*N)]
+    influential_nodes_15 = degree_ordered_nodes[int(0.1*N):int(0.15*N)]
+    influential_nodes_20 = degree_ordered_nodes[int(0.15*N):int(0.2*N)]
+    bottom_nodes = degree_ordered_nodes[int(0.9*N):]
     
     ## Normal nodes are nodes with degree close to average
     lower, upper = int(np.floor(n_avg)), int(np.ceil(n_avg))
     normal_nodes = [x for x in G.nodes() if lower <= G.degree(x) <= upper ]
 
-    influential_S = []
-    influential_t = []
-    normal_S = []
-    normal_t = []
+    influential_S_5, influential_S_10, influential_S_15, influential_S_20 = [], [], [], []
+    influential_t_5, influential_t_10, influential_t_15, influential_t_20 = [], [], [], []
+    normal_S, bottom_S = [], []
+    normal_t, bottom_t = [], []
     
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
-    for node in influential_nodes:
+    for node in influential_nodes_5:
         S, t = simulate_spread(G, node, phi)
-        influential_S.append(S)
-        influential_t.append(t)
-        
-    ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
-    ## for each normal node
+        influential_S_5.append(S)
+        influential_t_5.append(t)    
+    for node in influential_nodes_10:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_10.append(S)
+        influential_t_10.append(t)
+    for node in influential_nodes_15:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_15.append(S)
+        influential_t_15.append(t)
+    for node in influential_nodes_20:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_20.append(S)
+        influential_t_20.append(t)
+    for node in bottom_nodes:
+        S, t = simulate_spread(G, node, phi)
+        bottom_S.append(S)
+        bottom_t.append(t)
     for node in normal_nodes:
         S, t = simulate_spread(G, node, phi)
         normal_S.append(S)
         normal_t.append(t)
-
-    return [np.mean(influential_S), np.mean(normal_S), np.mean(influential_t), np.mean(normal_t)]
+    
+    return [np.mean(influential_S_5), np.mean(influential_S_10), np.mean(influential_S_15), np.mean(influential_S_20), np.mean(influential_S_5 + influential_S_10), np.mean(influential_S_5 + influential_S_10 + influential_S_15), np.mean(influential_S_5 + influential_S_10 + influential_S_15 + influential_S_20), np.mean(normal_S), np.mean(bottom_S),
+            np.mean(influential_t_5), np.mean(influential_t_10), np.mean(influential_t_15), np.mean(influential_t_20), np.mean(influential_t_5 + influential_t_10), np.mean(influential_t_5 + influential_t_10 + influential_t_15), np.mean(influential_t_5 + influential_t_10 + influential_t_15 + influential_t_20), np.mean(normal_t), np.mean(bottom_t)]
