@@ -215,15 +215,28 @@ def run_simulation(G, phi=0.18, q=0.1, directed=False):
     
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
-    for node in influential_nodes:
-        S, t = simulate_spread_directed(G, node, phi) if directed else simulate_spread(G, node, phi)
-        influential_S.append(S)
-        influential_t.append(t)
-        
-    ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
-    ## for each normal node
+    for node in influential_nodes_5:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)    
+    for node in influential_nodes_10:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_10.append(S)
+        influential_t_10.append(t)
+    for node in influential_nodes_15:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_15.append(S)
+        influential_t_15.append(t)
+    for node in influential_nodes_20:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_20.append(S)
+        influential_t_20.append(t)
+    for node in bottom_nodes:
+        S, t = simulate_spread(G, node, phi)
+        bottom_S.append(S)
+        bottom_t.append(t)
     for node in normal_nodes:
-        S, t = simulate_spread_directed(G, node, phi) if directed else simulate_spread(G, node, phi)
+        S, t = simulate_spread(G, node, phi)
         normal_S.append(S)
         normal_t.append(t)
 
