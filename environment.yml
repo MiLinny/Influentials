@@ -33,3 +33,4 @@ dependencies:
   - python-graphviz
   - zarr
   - tqdm
+  - jupyterlab-dash
