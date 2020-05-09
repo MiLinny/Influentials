@@ -19,6 +19,7 @@ Install Miniconda/Anaconda and run the following commmand in terminal within the
     conda env create -f binder/environment.yml
     conda activate dask
     jupyter labextension install @jupyter-widgets/jupyterlab-manager
+    conda install -c plotly -c defaults -c conda-forge "jupyterlab>=1.0" jupyterlab-dash=0.1.0a3
     jupyter labextension install jupyterlab-dash@0.1.0-alpha.3
     
     
