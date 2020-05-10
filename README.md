@@ -29,6 +29,6 @@ Install Miniconda/Anaconda and run the following commmand in terminal within the
   Influentials, Networks, and Public Opinion Formation Paper: https://www.uvm.edu/pdodds/research/papers/others/2007/watts2007a.pdf
 
 ### Data
-  Twitter data: https://snap.stanford.edu/data/ego-Twitter.html
+  Advogato data: http://networkrepository.com/soc-advogato.php
   
   Facebook data: https://snap.stanford.edu/data/ego-Facebook.html
