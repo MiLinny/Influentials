@@ -11,6 +11,7 @@
  
  - Simulations of the spread of innovations/ideas using Facebook/Twitter data.
  
+ Some plots of the results can be accessed using the following link: https://milinny.github.io/Influentials/
  
 ## Environment
 
