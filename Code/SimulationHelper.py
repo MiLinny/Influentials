@@ -123,6 +123,38 @@ def simulate_spread(G, initial_node, phi):
     expected_time = sum([i * t[i] for i in range(N)])/N
     return (len(influenced_nodes), expected_time)
 
+
+def simulate_spread_wrapper(G, node_list, phi):
+    G_copy = G.copy()
+    ## PC
+    for node in node_list:
+        set_influence(G_tmp, 1, node=node)
+    return simulate_spread_generic(G,phi)
+
+def simulate_spread_generic(G, phi):
+    N = G_tmp.number_of_nodes()
+    t = [0 for _ in range(N)]
+    time, num_influenced = 1, 1
+    t[0] = 1
+    influenced_nodes = set([node for node in G.nodes() if get_is_influenced(G, node) == 1 ])
+    
+    ## Iteratively compute the number of nodes (update t[time]) influenced at
+    ## each time step until a time step is reached where no neighbours to
+    ## the influenced component can be influenced.
+    while num_influenced > 0:
+        num_influenced = 0
+        neighbours = get_uninfluenced_neighbours(G_tmp, influenced_nodes)
+        for node in neighbours:
+            if update_influence(G_tmp, node, phi, time):
+                num_influenced += 1
+                influenced_nodes.add(node)
+        t[time] = num_influenced
+        time += 1
+    
+    ## Determine the empirical expected time to be influenced
+    expected_time = sum([i * t[i] for i in range(N)])/N
+    return (len(influenced_nodes), expected_time)
+
 def update_influence_directed(G, node, phi, time, label='is_influenced'):
     '''
         Assumes the node isn't currently influenced.
@@ -394,6 +426,71 @@ def run_simulation_SF(N,n_avg,phi=0.18):
     normal_S, bottom_S = [], []
     normal_t, bottom_t = [], []
     
+    ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
+    ## for each influential node
+    for node in influential_nodes_5:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)    
+    for node in influential_nodes_10:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_10.append(S)
+        influential_t_10.append(t)
+    for node in influential_nodes_15:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_15.append(S)
+        influential_t_15.append(t)
+    for node in influential_nodes_20:
+        S, t = simulate_spread(G, node, phi)
+        influential_S_20.append(S)
+        influential_t_20.append(t)
+    for node in bottom_nodes:
+        S, t = simulate_spread(G, node, phi)
+        bottom_S.append(S)
+        bottom_t.append(t)
+    for node in normal_nodes:
+        S, t = simulate_spread(G, node, phi)
+        normal_S.append(S)
+        normal_t.append(t)
+    
+    return [np.mean(influential_S_5), np.mean(influential_S_10), np.mean(influential_S_15), np.mean(influential_S_20), np.mean(influential_S_5 + influential_S_10), np.mean(influential_S_5 + influential_S_10 + influential_S_15), np.mean(influential_S_5 + influential_S_10 + influential_S_15 + influential_S_20), np.mean(normal_S), np.mean(bottom_S),
+            np.mean(influential_t_5), np.mean(influential_t_10), np.mean(influential_t_15), np.mean(influential_t_20), np.mean(influential_t_5 + influential_t_10), np.mean(influential_t_5 + influential_t_10 + influential_t_15), np.mean(influential_t_5 + influential_t_10 + influential_t_15 + influential_t_20), np.mean(normal_t), np.mean(bottom_t)]
+
+
+# PC
+def run_simulation_RG(N,p,phi=0.18):
+    '''
+        Simulation of Poisson/Binomial Random Graph
+        Returns the average size of influenced nodes and average expected 
+        time to be influenced from 
+            - influential nodes
+            - normal nodes
+    '''
+    G = nx.erdos_renyi_graph(N,p)
+    set_influence(G, 0)
+    set_time(G, 0)
+    
+    ## PC - In the population generation, change them to combinatoric pair things 
+    ## or generalise for some n?? idk
+    
+    ## Retrieve influential nodes - top q% and non-influential nodes
+    degree_ordered_nodes = sorted(list(G.nodes()), key=lambda x: G.degree(x), reverse=True)
+    influential_nodes_5   = degree_ordered_nodes[:int(0.05*N)]
+    influential_nodes_10  = degree_ordered_nodes[int(0.05*N):int(0.1*N)]
+    influential_nodes_15 = degree_ordered_nodes[int(0.1*N):int(0.15*N)]
+    influential_nodes_20 = degree_ordered_nodes[int(0.15*N):int(0.2*N)]
+    bottom_nodes = degree_ordered_nodes[int(0.9*N):]
+        
+    average = p * (N-1)
+    lower, upper = int(np.floor(average)), int(np.ceil(average))
+    normal_nodes = [x for x in G.nodes() if lower <= G.degree(x) <= upper ]
+
+    influential_S_5, influential_S_10, influential_S_15, influential_S_20 = [], [], [], []
+    influential_t_5, influential_t_10, influential_t_15, influential_t_20 = [], [], [], []
+    normal_S, bottom_S = [], []
+    normal_t, bottom_t = [], []
+    
+    ## PC - Replace simulate spread with simulate spread wrapper function.
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
     for node in influential_nodes_5:
