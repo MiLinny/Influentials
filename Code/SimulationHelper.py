@@ -493,34 +493,65 @@ def run_simulation_RG_PC(N,p,phi=0.18):
     ## Generate pairs for influential nodes 0-5 and groups of 4 for influential_nodes_10
     influential_nodes_5_pairs = []
     influential_nodes_10_pairs = []
-    influential_nodes_10_groups = []
+    influential_nodes_15_pairs = []
+    influential_nodes_20_pairs = []
+    normal_nodes_pairs = []
+    bottom_nodes_pairs = []
+    #influential_nodes_10_groups = []
     
     for i in np.arange(len(influential_nodes_5)):
         for j in np.arange(i, len(influential_nodes_5)):
             influential_nodes_5_pairs.append([influential_nodes_5[i], influential_nodes_5[j]])
-
     for i in np.arange(len(influential_nodes_10)):
         for j in np.arange(i, len(influential_nodes_10)):
-            influential_nodes_10_pairs.append([influential_nodes_10[i], influential_nodes_10[j]])
+            influential_nodes_10_pairs.append([influential_nodes_10[i], influential_nodes_10[j]])            
+    for i in np.arange(len(influential_nodes_15)):
+        for j in np.arange(i, len(influential_nodes_15)):
+            influential_nodes_15_pairs.append([influential_nodes_15[i], influential_nodes_15[j]])
+    for i in np.arange(len(influential_nodes_20)):
+        for j in np.arange(i, len(influential_nodes_20)):
+            influential_nodes_20_pairs.append([influential_nodes_20[i], influential_nodes_20[j]])          
+    for i in np.arange(len(normal_nodes)):
+        for j in np.arange(i, len(normal_nodes)):
+            normal_nodes_pairs.append([normal_nodes[i], normal_nodes[j]])
+    for i in np.arange(len(bottom_nodes)):
+        for j in np.arange(i, len(bottom_nodes)):
+            bottom_nodes_pairs.append([bottom_nodes[i], bottom_nodes[j]])
     
-    for node in influential_nodes_10:
-        inf_nod_10 = influential_nodes_10.copy()
-        inf_nod_10.remove(node)
-        influential_nodes_10_groups.append(inf_nod_10)
+    #for node in influential_nodes_10:
+    #    inf_nod_10 = influential_nodes_10.copy()
+    #    inf_nod_10.remove(node)
+    #    influential_nodes_10_groups.append(inf_nod_10)
     
     
     for node_list in influential_nodes_5_pairs:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         influential_S_5.append(S)
         influential_t_5.append(t)    
-    for node_list in influential_nodes_10_groups:
+    #for node_list in influential_nodes_10_groups:
+    #    S, t = simulate_spread_wrapper(G, node_list, phi)
+    #    influential_S_10.append(S)
+    #    influential_t_10.append(t)
+    for node_list in influential_nodes_10_pairs:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         influential_S_10.append(S)
         influential_t_10.append(t)
-    for node_list in influential_nodes_10_pairs:
+    for node_list in influential_nodes_15_pairs:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         influential_S_15.append(S)
         influential_t_15.append(t)
+    for node_list in influential_nodes_20_pairs:
+        S, t = simulate_spread_wrapper(G, node_list, phi)
+        influential_S_20.append(S)
+        influential_t_20.append(t)
+    for node_list in normal_nodes_pairs:
+        S, t = simulate_spread_wrapper(G, node_list, phi)
+        normal_S.append(S)
+        normal_t.append(t)
+    for node_list in bottom_nodes_pairs:
+        S, t = simulate_spread_wrapper(G, node_list, phi)
+        bottom_S.append(S)
+        bottom_t.append(t)
         
    ## for node in influential_nodes_20:
    ##     S, t = simulate_spread(G, node, phi)
