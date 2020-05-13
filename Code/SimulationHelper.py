@@ -295,9 +295,10 @@ def run_simulation_RG_directed(N,p,phi=0.18):
     bottom_nodes = degree_ordered_nodes[int(0.9*N):]
         
     average = p * (N-1)
-    lower, upper = int(np.floor(average)), int(np.ceil(average))
+    lower = np.mean(list(dict(G.degree()).values())) - np.std(list(dict(G.degree()).values()))/2
+    upper = np.mean(list(dict(G.degree()).values())) + np.std(list(dict(G.degree()).values()))/2
     normal_nodes = [x for x in G.nodes() if lower <= G.degree(x) <= upper ]
-
+    
     influential_S_5, influential_S_10, influential_S_15, influential_S_20 = [], [], [], []
     influential_t_5, influential_t_10, influential_t_15, influential_t_20 = [], [], [], []
     normal_S, bottom_S = [], []
