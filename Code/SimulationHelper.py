@@ -200,7 +200,7 @@ def simulate_spread_directed(G, initial_node, phi):
         num_influenced = 0
         neighbours = get_uninfluenced_neighbours(G_tmp, influenced_nodes)
         for node in neighbours:
-            if update_influence_directed(G_tmp, node, phi):
+            if update_influence_directed(G_tmp, node, phi, time):
                 num_influenced += 1
                 influenced_nodes.add(node)
         t[time] = num_influenced
@@ -306,27 +306,27 @@ def run_simulation_RG_directed(N,p,phi=0.18):
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
     for node in influential_nodes_5:
-        S, t = simulate_spread(G, node, phi)
+        S, t = simulate_spread_directed(G, node, phi)
         influential_S_5.append(S)
         influential_t_5.append(t)    
     for node in influential_nodes_10:
-        S, t = simulate_spread(G, node, phi)
+        S, t = simulate_spread_directed(G, node, phi)
         influential_S_10.append(S)
         influential_t_10.append(t)
     for node in influential_nodes_15:
-        S, t = simulate_spread(G, node, phi)
+        S, t = simulate_spread_directed(G, node, phi)
         influential_S_15.append(S)
         influential_t_15.append(t)
     for node in influential_nodes_20:
-        S, t = simulate_spread(G, node, phi)
+        S, t = simulate_spread_directed(G, node, phi)
         influential_S_20.append(S)
         influential_t_20.append(t)
     for node in bottom_nodes:
-        S, t = simulate_spread(G, node, phi)
+        S, t = simulate_spread_directed(G, node, phi)
         bottom_S.append(S)
         bottom_t.append(t)
     for node in normal_nodes:
-        S, t = simulate_spread(G, node, phi)
+        S, t = simulate_spread_directed(G, node, phi)
         normal_S.append(S)
         normal_t.append(t)
     
