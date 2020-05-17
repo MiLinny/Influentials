@@ -45,6 +45,7 @@
 \hypersetup{
     linktoc=all,     %set to all if you want both sections and subsections linked
 }
+\usepackage{url}
 
 \usepackage{graphicx}	%Allows you to insert images
 \graphicspath{ {./figs/} }	%Images are stored in the images folder in current directory'
@@ -160,22 +161,28 @@ Poisson Random Graphs.
 The Poisson random graph model is a simple random graph model where the influence distribution $p(n)$ is Poisson meaning $p(n) \sim Poisson(\lambda)$ with $\lambda$ representing the average number of neighbours. In a world described by a Poisson random graph, the network exhibits no structure meaning influence connections between neighbours are random. 
 Additionally, the influence distribution has little variation around its average meaning individuals who are more influential generally aren't exceptionally more influential.
 With this model, connections can be either undirected or have a direction.
-Consequently, this influence distribution can model worlds where the spread of influences are bidirectional and unidirectional.
+Consequently, this influence distribution can model worlds where the spread of influences are bidirectional or unidirectional.
 % Consequently, this influence distribution can model worlds where influences are bidirectional, meaning neighbours can influence each other, and worlds where influence is unidirectional, meaning an individual can influence a neighbour but they may not necessarily influence them.
 
 \subsubsection{Scale-Free Networks}
-The Scale-Free random graph model is a common model which is used to simulate a network that is more reminiscent of a social network. 
+The scale-free random graph model is a common model which is used to simulate a network that is more reminiscent of a social network. 
 Specifically, the influence distribution $p(n)$ follows a power law distribution meaning $p(n) \sim n^{-\alpha}$ for some $\alpha$.
+Unlike the Poisson random graph, scale-free networks contain large hubs which represent people who are connected to a a significantly larger number of people than the average person. 
+Using this model, we can more closely explore how people who can influence a larger proportion of the community compare with the average person.
 
 
 \subsection{Influentials}
-What are influentials and how we define them.
-Pagerank.
+The characteristics of influentials is not well-defined and often described as a group who can influence an exceptional number of peers.
+For our analysis, we focused on seeing whether relative high number of neighbours is a characteristic of influential people by analysing the degree of influence of subsets of the simulated population based off the number of connection of each individual.
+Specifically, we analysed the following groups based off the number of connections
+\[ 0-5, 5-10, 10-15, 15-20, 95-100, n_{norm} \]
+where $0-5$ represents the people in the simulated data who are in the top $5\%$ ranked by number of connections and $n_{norm}$ represents the subset of the population who are at most half a standard deviation away from the average degree $n_{avg}$ of the network.
+
 
 
 
 \subsection{Influence Dynamics}
-
+To simulate the cascade we did this \cite{github}
 
 
 \begin{itemize}
