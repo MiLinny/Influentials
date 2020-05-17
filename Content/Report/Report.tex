@@ -157,8 +157,16 @@ Poisson Random Graphs.
 
 
 \subsubsection{Poisson Random Graph}
+The Poisson random graph model is a simple random graph model where the influence distribution $p(n)$ is Poisson meaning $p(n) \sim Poisson(\lambda)$ with $\lambda$ representing the average number of neighbours. In a world described by a Poisson random graph, the network exhibits no structure meaning influence connections between neighbours are random. 
+Additionally, the influence distribution has little variation around its average meaning individuals who are more influential generally aren't exceptionally more influential.
+With this model, connections can be either undirected or have a direction.
+Consequently, this influence distribution can model worlds where the spread of influences are bidirectional and unidirectional.
+% Consequently, this influence distribution can model worlds where influences are bidirectional, meaning neighbours can influence each other, and worlds where influence is unidirectional, meaning an individual can influence a neighbour but they may not necessarily influence them.
 
 \subsubsection{Scale-Free Networks}
+The Scale-Free random graph model is a common model which is used to simulate a network that is more reminiscent of a social network. 
+Specifically, the influence distribution $p(n)$ follows a power law distribution meaning $p(n) \sim n^{-\alpha}$ for some $\alpha$.
+
 
 \subsection{Influentials}
 What are influentials and how we define them.
