@@ -56,6 +56,45 @@
 \usepackage{algorithm} % Writing Algorithms
 \usepackage[noend]{algpseudocode}
 
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,breakable,xparse,skins}
+
+% \definecolor{bg}{gray}{0.95}
+% \DeclareTCBListing{mintedbox}{O{}m!O{}}{%
+%   breakable=true,
+%   listing engine=minted,
+%   listing only,
+%   minted language=#2,
+%   minted style=default,
+%   minted options={%
+%     linenos,
+%     gobble=0,
+%     breaklines=true,
+%     breakafter=,,
+%     fontsize=\small,
+%     numbersep=8pt,
+%     #1},
+%   boxsep=0pt,
+%   left skip=0pt,
+%   right skip=0pt,
+%   left=25pt,
+%   right=0pt,
+%   top=3pt,
+%   bottom=3pt,
+%   arc=5pt,
+%   leftrule=0pt,
+%   rightrule=0pt,
+%   bottomrule=2pt,
+%   toprule=2pt,
+%   colback=bg,
+%   colframe=orange!70,
+%   enhanced,
+%   overlay={%
+%     \begin{tcbclipinterior}
+%     \fill[orange!20!white] (frame.south west) rectangle ([xshift=20pt]frame.north west);
+%     \end{tcbclipinterior}},
+%   #3}
+
 \title{Influentials and the Spread of Innovations}                                % Document Title
 \author{Michael Lin\\470414095}
 
@@ -121,7 +160,7 @@ which can be in one of two discrete states $\{ 0, 1\}$, with a \textit{threshold
 An individual in state $1$ is said to be \texttt{influenced} by an innovation while an 
 individual in state $0$ is uninfluenced by an innovation.
 Defining $p_i$ to be the proportion of $i$'s neighbours who are influenced (in state $1$), then 
-the probability of $i$ being influenced (in stat $1$) is given by
+the probability of $i$ being influenced (in state $1$) is given by
 \[ P[\text{Node } i \text{ in state } 1] = 
 \begin{cases}
     1 & p_i \geq \phi_i \\
@@ -182,18 +221,33 @@ where $0-5$ represents the people in the simulated data who are in the top $5\%$
 
 
 \subsection{Influence Dynamics}
-To simulate the cascade we did this \cite{github}
+For our model of influence, we implemented the following algorithm below to simulate the spread of influence\cite{github}.
 
+\begin{enumerate}
+    \item Generate a graph $G$ (Poisson/Scale-Free) of $N$ nodes, where $n_{avg}$ is known.
+    \item Assign nodes to the following groups $0-5,\dots,95-100,n_{norm}$.
+    \item For each group, simulate the spread of influence for each node in the group according to the following algorithm. (Spread of influence from a single node).
+    \begin{enumerate}
+        \item Set all nodes to state $0$ except for the initial node which is set to $1$.
+        \item Simulate the spread of influence for this initial state with known threshold $\phi$.
+    \end{enumerate}
+\end{enumerate}
 
-\begin{itemize}
-    \item Threshold Model
-    \item Scale-Free network
-    \item Poisson Random Graph Model 
-    \item Percolation
-\end{itemize}
-
+Our measure of interest is the cascade size for each group. 
+This model allows for both local and global cascades. 
+Local cascades only affect a small number of individuals that are typically close to the initial influencing node. 
+In contrast, global cascades can affect an exceptional number of individuals and are usually limited by the size of the population.
+With this measurement, influential groups are expected to be able to cause global cascades.
 
 \section{Results}
+
+\subsection{Invariance of Threshold Rule and Population Size}
+
+\subsection{Unidirectional and Bidirectional Influence Networks}
+
+
+\subsection{Poisson and Scale-Free Influence Distributions}
+
 
 
 
@@ -203,73 +257,85 @@ To simulate the cascade we did this \cite{github}
 \bibliographystyle{unsrt}
 \bibliography{bibliography}
 
+% \begin{mintedbox}{python}
+% if transactions: Transaction.create_transactions() # if transactions = "true"
+% node.generate_emptyState() # empty state for all nodes
+% S.initial_events() # initiate initial events to start with
+
+% while not queue.isEmpty() and clock <= targetTime:
+%       next_e = queue.get_next_event()
+%       clock = next_e.time # move clock to the time of the event
+%       Event.execute_event(next_e)
+%       Queue.remove_event(next_e)
+
+% print results
+% \end{mintedbox}
+
+
+% \section{Main Points}
+
+% \begin{itemize}
+%     \item Influentials - a minority within a population who exert influence on an exceptional number of their peers.
+%     \item Motivation - We want to understand whether influentials play a significant role in the spread of influence.
+%     \item How - What factors within a network contribute to the spread of innovations and does it affect the influence of influentials
+%     \item 
+% \end{itemize}
+
+
+% Background 
+% \begin{itemize}
+%     \item What are influentials 
+%     \item 
+% \end{itemize}
+
+% \begin{itemize}
+%     \item Poisson Random Graph - If a cascade can occur, anyone can start it
+% \end{itemize}
+
+% \section{Introduction}
+
+% \subsection{The Influentials Hypothesis}
+% \texttt{Influentials} are a minority of individuals who influence an exceptional 
+% number of their peers. 
+
+% The \textbf{hypothesis} was that influentials were mediators between the source of innovation and the majority 
+% of society. The model, called the \texttt{two-step flow} of communication.
+
+% \subsection{Questions of Interest}
+% \begin{itemize}
+%     \item What does the two-step model say about influentials?
+%     \item How do influentials exert influence over the larger population?
+%     \item Are influentials responsible for the spread/diffusion of innovation?
+% \end{itemize}
 
 
 
-\section{Main Points}
 
-\begin{itemize}
-    \item Influentials - a minority within a population who exert influence on an exceptional number of their peers.
-    \item Motivation - We want to understand whether influentials play a significant role in the spread of influence.
-    \item How - What factors within a network contribute to the spread of innovations and does it affect the influence of influentials
-    \item 
-\end{itemize}
+% \subsection{General Results}
 
-
-Background 
-\begin{itemize}
-    \item What are influentials 
-    \item 
-\end{itemize}
-
-\begin{itemize}
-    \item Poisson Random Graph - If a cascade can occur, anyone can start it
-\end{itemize}
-
-\section{Introduction}
-
-\subsection{The Influentials Hypothesis}
-\texttt{Influentials} are a minority of individuals who influence an exceptional 
-number of their peers. 
-
-The \textbf{hypothesis} was that influentials were mediators between the source of innovation and the majority 
-of society. The model, called the \texttt{two-step flow} of communication.
-
-\subsection{Questions of Interest}
-\begin{itemize}
-    \item What does the two-step model say about influentials?
-    \item How do influentials exert influence over the larger population?
-    \item Are influentials responsible for the spread/diffusion of innovation?
-\end{itemize}
+% \begin{itemize}
+%     \item Under certain (rare) conditions, influentials appear responsible for 
+%     initiating cascades of influence and are important.
+%     \item Under most conditions, most cascades are driven by easily influenced individuals
+%     influencing other easily influenced individuals.
+% \end{itemize}
 
 
+% \begin{itemize}
+%     \item Model: Two-way influence model with influentials acting as a middle-man.
+%     \item Simulations suggest that under certain conditions, influentials promote 
+%     cascading effects but these conditions are rare.
+%     \item Computer simulation models 
+% \end{itemize}
 
 
-\subsection{General Results}
+% Simulations 
 
-\begin{itemize}
-    \item Under certain (rare) conditions, influentials appear responsible for 
-    initiating cascades of influence and are important.
-    \item Under most conditions, most cascades are driven by easily influenced individuals
-    influencing other easily influenced individuals.
-\end{itemize}
-
-
-\begin{itemize}
-    \item Model: Two-way influence model with influentials acting as a middle-man.
-    \item Simulations suggest that under certain conditions, influentials promote 
-    cascading effects but these conditions are rare.
-    \item Computer simulation models 
-\end{itemize}
-
-
-Simulations 
-
-Threshold Model
-\begin{itemize}
-    \item Each individual $i$ in a population of $N$ influence $n_i$ random individuals.
-    \item Early adopters are individuals who adopt an innovation when a single neighbour has innovated.
-\end{itemize}
+% Threshold Model
+% \begin{itemize}
+%     \item Each individual $i$ in a population of $N$ influence $n_i$ random individuals.
+%     \item Early adopters are individuals who adopt an innovation when a single neighbour has innovated.
+% \end{itemize}
 
 
 
