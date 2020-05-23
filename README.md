@@ -9,7 +9,9 @@
  
  - Simulations of the spread of innovations/ideas in a poisson random graph and scale free network under the threshold model.
  
- - Simulations of the spread of innovations/ideas using Facebook/Twitter data.
+ - Simulations of the spread of innovations/ideas using Facebook/Advogato data.
+ 
+ - Dashboard for exploring the results.
  
  Some plots of the results can be accessed using the following link: https://milinny.github.io/Influentials/
  
