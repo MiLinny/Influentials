@@ -128,9 +128,10 @@ def simulate_spread(G, initial_node, phi):
 
 
 def simulate_spread_wrapper(G, node_list, phi):
+    G_tmp = G.copy()
     for node in node_list:
-        set_influence(G, 1, node=node)
-    return simulate_spread_generic(G,phi)
+        set_influence(G_tmp, 1, node=node)
+    return simulate_spread_generic(G_tmp,phi)
 
 def simulate_spread_generic(G, phi):
     N = G.number_of_nodes()
