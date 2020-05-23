@@ -1,12 +1,13 @@
 import networkx as nx
 import numpy as np
 import itertools as it
+import datetime as dt
 
 
 #########################################################################################
 ############################### Network Helper Functions  ###############################
 #########################################################################################
-print("Hello this has loaded")
+print("Hello this has loaded", dt.datetime.now())
 
 def set_time(G, value, node=None, time='time'):
     '''
@@ -492,13 +493,88 @@ def run_simulation_RG_PC(N,p,phi=0.18, groupsize = 2):
     ## for each influential node
     
     ## Generate group for influential nodes 0-5 and groups of 4 for influential_nodes_10
-    influential_nodes_5_group = it.combinations(influential_nodes_5, groupsize)
-    influential_nodes_10_group = it.combinations(influential_nodes_10, groupsize)
-    influential_nodes_15_group = it.combinations(influential_nodes_15, groupsize)
-    influential_nodes_20_group = it.combinations(influential_nodes_20, groupsize)
-    normal_nodes_group = it.combinations(normal_nodes, groupsize)
-    bottom_nodes_group = it.combinations(bottom_nodes, groupsize)
-    
+    if groupsize <= np.floor(N/40) + 1:
+        influential_nodes_5_group = it.combinations(influential_nodes_5, groupsize)
+        influential_nodes_10_group = it.combinations(influential_nodes_10, groupsize)
+        influential_nodes_15_group = it.combinations(influential_nodes_15, groupsize)
+        influential_nodes_20_group = it.combinations(influential_nodes_20, groupsize)
+        normal_nodes_group = it.combinations(normal_nodes, groupsize)
+        bottom_nodes_group = it.combinations(bottom_nodes, groupsize)
+    ## else:
+    ##     nodes_copy = list(G.nodes())
+    ##     notgroupsize = int(N/20 - groupsize)
+    ##     influential_nodes_5_group = it.combinations(influential_nodes_5, notgroupsize)
+    ##     influential_nodes_5_group = np.setdiff1d(nodes_copy,influential_nodes_5_group)
+    ##     influential_nodes_10_group = it.combinations(influential_nodes_10, notgroupsize)
+    ##     influential_nodes_10_group = np.setdiff1d(nodes_copy,influential_nodes_10_group)
+    ##     influential_nodes_15_group = it.combinations(influential_nodes_15, notgroupsize)
+    ##     influential_nodes_15_group = np.setdiff1d(nodes_copy,influential_nodes_15_group)
+    ##     influential_nodes_20_group = it.combinations(influential_nodes_20, notgroupsize)
+    ##     influential_nodes_20_group = np.setdiff1d(nodes_copy,influential_nodes_20_group)
+    ##     normal_nodes_group = it.combinations(normal_nodes, notgroupsize)
+    ##     normal_nodes_group = np.setdiff1d(nodes_copy,normal_nodes_group)
+    ##     bottom_nodes_group = it.combinations(bottom_nodes, notgroupsize)
+    ##     bottom_nodes_group = np.setdiff1d(nodes_copy,bottom_nodes_group)
+    elif groupsize == 4:
+        influential_nodes_5_group = []
+        influential_nodes_10_group = []
+        influential_nodes_15_group = []
+        influential_nodes_20_group = []
+        normal_nodes_group = []
+        bottom_nodes_group = []
+        for i in np.arange(5):
+            #influential_nodes_5_group.append([x for x in influential_nodes_5 if x != influential_nodes_5[i]])
+            #influential_nodes_10_group.append([x for x in influential_nodes_10 if x != influential_nodes_10[i]])
+            #influential_nodes_15_group.append([x for x in influential_nodes_15 if x != influential_nodes_15[i]])
+            #influential_nodes_20_group.append([x for x in influential_nodes_20 if x != influential_nodes_20[i]])
+            #normal_nodes_group.append([x for x in normal_nodes if x != normal_nodes[i]])
+            #bottom_nodes_group.append([x for x in bottom_nodes if x != bottom_nodes[i]])
+            
+            nodes_05 = np.array(influential_nodes_5)
+            nodes_10 = np.array(influential_nodes_10)
+            nodes_15 = np.array(influential_nodes_15)
+            nodes_20 = np.array(influential_nodes_20)
+            normal = np.array(normal_nodes)
+            bottom = np.array(bottom_nodes)
+            
+            influential_nodes_5_group.append(nodes_05[np.arange(len(nodes_05))!=i].tolist())
+            influential_nodes_10_group.append(nodes_10[np.arange(len(nodes_10))!=i].tolist())
+            influential_nodes_15_group.append(nodes_15[np.arange(len(nodes_15))!=i].tolist())
+            influential_nodes_20_group.append(nodes_20[np.arange(len(nodes_20))!=i].tolist())
+            normal_nodes_group.append(normal[np.arange(len(normal))!=i].tolist())
+            bottom_nodes_group.append(bottom[np.arange(len(bottom))!=i].tolist())
+            
+    elif groupsize == int(N/20):
+        influential_nodes_5_group = influential_nodes_5
+        influential_nodes_10_group = influential_nodes_10
+        influential_nodes_15_group = influential_nodes_15
+        influential_nodes_20_group = influential_nodes_20
+        normal_nodes_group = normal_nodes
+        bottom_nodes_group = bottom_nodes
+        
+        S, t = simulate_spread_wrapper(G, influential_nodes_5_group, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)
+        S, t = simulate_spread_wrapper(G, influential_nodes_10_group, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)
+        S, t = simulate_spread_wrapper(G, influential_nodes_15_group, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)
+        S, t = simulate_spread_wrapper(G, influential_nodes_20_group, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)
+        S, t = simulate_spread_wrapper(G, normal_nodes_group, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)
+        S, t = simulate_spread_wrapper(G, bottom_nodes_group, phi)
+        influential_S_5.append(S)
+        influential_t_5.append(t)
+        
+        return [np.mean(influential_S_5), np.mean(influential_S_10), np.mean(influential_S_15), np.mean(influential_S_20), np.mean(influential_S_5 + influential_S_10), np.mean(influential_S_5 + influential_S_10 + influential_S_15), np.mean(influential_S_5 + influential_S_10 + influential_S_15 + influential_S_20), np.mean(normal_S), np.mean(bottom_S),
+            np.mean(influential_t_5), np.mean(influential_t_10), np.mean(influential_t_15), np.mean(influential_t_20), np.mean(influential_t_5 + influential_t_10), np.mean(influential_t_5 + influential_t_10 + influential_t_15), np.mean(influential_t_5 + influential_t_10 + influential_t_15 + influential_t_20), np.mean(normal_t), np.mean(bottom_t)]
+        
+        
     ## for i in np.arange(len(influential_nodes_5)):
     ##     for j in np.arange(i, len(influential_nodes_5)):
     ##         influential_nodes_5_group.append([influential_nodes_5[i], influential_nodes_5[j]])
