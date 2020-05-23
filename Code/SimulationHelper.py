@@ -1,5 +1,6 @@
 import networkx as nx
 import numpy as np
+import itertools as it
 
 
 #########################################################################################
@@ -458,7 +459,7 @@ def run_simulation_SF(N,n_avg,phi=0.18):
 
 
 
-def run_simulation_RG_PC(N,p,phi=0.18):
+def run_simulation_RG_PC(N,p,phi=0.18, groupsize = 2):
     '''
         Simulation of Poisson/Binomial Random Graph
         Returns the average size of influenced nodes and average expected 
@@ -490,41 +491,35 @@ def run_simulation_RG_PC(N,p,phi=0.18):
     ## Calculate the number of influenced nodes (S) and expected time of influenced nodes
     ## for each influential node
     
-    ## Generate pairs for influential nodes 0-5 and groups of 4 for influential_nodes_10
-    influential_nodes_5_pairs = []
-    influential_nodes_10_pairs = []
-    influential_nodes_15_pairs = []
-    influential_nodes_20_pairs = []
-    normal_nodes_pairs = []
-    bottom_nodes_pairs = []
-    #influential_nodes_10_groups = []
+    ## Generate group for influential nodes 0-5 and groups of 4 for influential_nodes_10
+    influential_nodes_5_group = it.combinations(influential_nodes_5, groupsize)
+    influential_nodes_10_group = it.combinations(influential_nodes_10, groupsize)
+    influential_nodes_15_group = it.combinations(influential_nodes_15, groupsize)
+    influential_nodes_20_group = it.combinations(influential_nodes_20, groupsize)
+    normal_nodes_group = it.combinations(normal_nodes, groupsize)
+    bottom_nodes_group = it.combinations(bottom_nodes, groupsize)
     
-    for i in np.arange(len(influential_nodes_5)):
-        for j in np.arange(i, len(influential_nodes_5)):
-            influential_nodes_5_pairs.append([influential_nodes_5[i], influential_nodes_5[j]])
-    for i in np.arange(len(influential_nodes_10)):
-        for j in np.arange(i, len(influential_nodes_10)):
-            influential_nodes_10_pairs.append([influential_nodes_10[i], influential_nodes_10[j]])            
-    for i in np.arange(len(influential_nodes_15)):
-        for j in np.arange(i, len(influential_nodes_15)):
-            influential_nodes_15_pairs.append([influential_nodes_15[i], influential_nodes_15[j]])
-    for i in np.arange(len(influential_nodes_20)):
-        for j in np.arange(i, len(influential_nodes_20)):
-            influential_nodes_20_pairs.append([influential_nodes_20[i], influential_nodes_20[j]])          
-    for i in np.arange(len(normal_nodes)):
-        for j in np.arange(i, len(normal_nodes)):
-            normal_nodes_pairs.append([normal_nodes[i], normal_nodes[j]])
-    for i in np.arange(len(bottom_nodes)):
-        for j in np.arange(i, len(bottom_nodes)):
-            bottom_nodes_pairs.append([bottom_nodes[i], bottom_nodes[j]])
-    
-    #for node in influential_nodes_10:
-    #    inf_nod_10 = influential_nodes_10.copy()
-    #    inf_nod_10.remove(node)
-    #    influential_nodes_10_groups.append(inf_nod_10)
+    ## for i in np.arange(len(influential_nodes_5)):
+    ##     for j in np.arange(i, len(influential_nodes_5)):
+    ##         influential_nodes_5_group.append([influential_nodes_5[i], influential_nodes_5[j]])
+    ## for i in np.arange(len(influential_nodes_10)):
+    ##     for j in np.arange(i, len(influential_nodes_10)):
+    ##         influential_nodes_10_group.append([influential_nodes_10[i], influential_nodes_10[j]])            
+    ## for i in np.arange(len(influential_nodes_15)):
+    ##     for j in np.arange(i, len(influential_nodes_15)):
+    ##         influential_nodes_15_group.append([influential_nodes_15[i], influential_nodes_15[j]])
+    ## for i in np.arange(len(influential_nodes_20)):
+    ##     for j in np.arange(i, len(influential_nodes_20)):
+    ##         influential_nodes_20_group.append([influential_nodes_20[i], influential_nodes_20[j]])          
+    ## for i in np.arange(len(normal_nodes)):
+    ##     for j in np.arange(i, len(normal_nodes)):
+    ##         normal_nodes_group.append([normal_nodes[i], normal_nodes[j]])
+    ## for i in np.arange(len(bottom_nodes)):
+    ##     for j in np.arange(i, len(bottom_nodes)):
+    ##         bottom_nodes_group.append([bottom_nodes[i], bottom_nodes[j]])
     
     
-    for node_list in influential_nodes_5_pairs:
+    for node_list in influential_nodes_5_group:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         influential_S_5.append(S)
         influential_t_5.append(t)    
@@ -532,39 +527,26 @@ def run_simulation_RG_PC(N,p,phi=0.18):
     #    S, t = simulate_spread_wrapper(G, node_list, phi)
     #    influential_S_10.append(S)
     #    influential_t_10.append(t)
-    for node_list in influential_nodes_10_pairs:
+    for node_list in influential_nodes_10_group:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         influential_S_10.append(S)
         influential_t_10.append(t)
-    for node_list in influential_nodes_15_pairs:
+    for node_list in influential_nodes_15_group:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         influential_S_15.append(S)
         influential_t_15.append(t)
-    for node_list in influential_nodes_20_pairs:
+    for node_list in influential_nodes_20_group:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         influential_S_20.append(S)
         influential_t_20.append(t)
-    for node_list in normal_nodes_pairs:
+    for node_list in normal_nodes_group:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         normal_S.append(S)
         normal_t.append(t)
-    for node_list in bottom_nodes_pairs:
+    for node_list in bottom_nodes_group:
         S, t = simulate_spread_wrapper(G, node_list, phi)
         bottom_S.append(S)
         bottom_t.append(t)
-        
-   ## for node in influential_nodes_20:
-   ##     S, t = simulate_spread(G, node, phi)
-   ##     influential_S_20.append(S)
-   ##     influential_t_20.append(t)
-   ## for node in bottom_nodes:
-   ##     S, t = simulate_spread(G, node, phi)
-   ##     bottom_S.append(S)
-   ##     bottom_t.append(t)
-   ## for node in normal_nodes:
-   ##     S, t = simulate_spread(G, node, phi)
-   ##     normal_S.append(S)
-   ##     normal_t.append(t)
     
     return [np.mean(influential_S_5), np.mean(influential_S_10), np.mean(influential_S_15), np.mean(influential_S_20), np.mean(influential_S_5 + influential_S_10), np.mean(influential_S_5 + influential_S_10 + influential_S_15), np.mean(influential_S_5 + influential_S_10 + influential_S_15 + influential_S_20), np.mean(normal_S), np.mean(bottom_S),
             np.mean(influential_t_5), np.mean(influential_t_10), np.mean(influential_t_15), np.mean(influential_t_20), np.mean(influential_t_5 + influential_t_10), np.mean(influential_t_5 + influential_t_10 + influential_t_15), np.mean(influential_t_5 + influential_t_10 + influential_t_15 + influential_t_20), np.mean(normal_t), np.mean(bottom_t)]
