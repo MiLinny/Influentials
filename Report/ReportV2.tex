@@ -2,7 +2,7 @@
 \usepackage{geometry, setspace, graphicx, enumerate}
 \onehalfspacing
 
-\geometry{bottom=4cm}
+\geometry{bottom=3.5cm}
 
 % AMS Theorems
 \theoremstyle{plain}% default
@@ -102,14 +102,15 @@
 \author{Michael Lin\\470414095}
 
 \begin{document}
-\vspace*{-1.5cm}
+\vspace*{-2cm}
 \begin{abstract}
     This report explores the \textit{influential hypothesis} - a minority of individuals, called 
     influentials, who can spread innovations to an exceptional number of peers are important to 
     the spread of ideas/innovations. We explore this idea by performing computer simulations 
-    modelling the interpersonal influence process under various conditions. It was found that 
-    the importance of influentials in the spread of influence depended on the degree distribution
+    modelling the interpersonal influence process under various conditions. 
+    Under our model, the importance of influentials in the spread of influence depended on the degree distribution
     of the network which suggests a reexamination of the \textit{influential hypothesis}.
+    This result highlights the importance of specifying the nature of interpersonal influences, the structure of influence networks and the meaning of influentials to better understand the implications of the hypothesis.
 \end{abstract}
 \maketitle 
 
@@ -123,19 +124,21 @@ adoption of new technologies, and the promotion of products by social media infl
 One hypothesis on how innovations are spread is called the \textit{influential hypothesis}\cite{Influential},
 which suggests that a minority of individuals called \textit{influentials} are able to spread 
 ideas/innovations to an exceptional number of peers. 
-However, this model does not explain the characteristics of influentials or precisely how 
+However, this hypothesis does not explain the characteristics of influentials or precisely how 
 responsible they are in the cascade of influence on the (non-influential) population.
+By specifying these details for our influence model, we are able to assess this hypothesis and understand the value of influentials in our model.
 
-In this report, we argue that it is unclear what characteristics underpin influentials and 
-whether they can be attributed to the adoption of social changes, new technologies, cultural 
-fads and other diffusion processes.
-By performing a series of computer simulations of various network models, it was found that 
+
+In this report, we characterise influentials and analyse and compare their role as initiators of innovations within both low-variance and high-variance networks\cite{Influential}.
+% In this report, we argue that it is unclear what characteristics underpin influentials and 
+% whether they can be attributed to the adoption of social changes, new technologies, cultural 
+% fads and other diffusion processes.
+By performing a series of computer simulations using both Poisson random graphs and scale-free networks, it was found that 
 there are instances where influentials show greater responsibility in the spread of influences.
 However, under other conditions it was found that influentials are only marginally more important
 than the average individual. 
 Although our models are simplifications of the complexities of reality, our results highlights
-the importance of population interconnectedness in dictating the responsibility of influentials
-in the cascade of influence.
+the dependence of the population interconnections structure in dictating the responsibility of influentials in the cascade of influence and gives a clearer interpretation and analysis of the influential hypothesis.
 
 
 
@@ -208,7 +211,7 @@ Consequently, this influence distribution can model worlds where the spread of i
 \subsubsection{Scale-Free Networks}
 The scale-free random graph model is a common model which is used to simulate a network that is more reminiscent of a social network. 
 Specifically, the influence distribution $p(n)$ follows a power law distribution meaning $p(n) \sim n^{-\alpha}$ for some $\alpha$.
-Unlike the Poisson random graph, scale-free networks contain large hubs which represent people who are connected to a a significantly larger number of people than the average person. 
+Unlike the Poisson random graph, scale-free networks exhibit much higher variation and contain large hubs which represent people who are connected to a significantly larger number of people than the average person. 
 Using this model, we can more closely explore how people who can influence a larger proportion of the community compare with the average person.
 
 
@@ -218,6 +221,7 @@ For our analysis, we focused on seeing whether relative high number of neighbour
 Specifically, we analysed the following groups based off the number of connections
 \[ 0-5, 5-10, 10-15, 15-20, 95-100, n_{norm} \]
 where $0-5$ represents the people in the simulated data who are in the top $5\%$ ranked by number of connections and $n_{norm}$ represents the subset of the population who are at most half a standard deviation away from the average degree $n_{avg}$ of the network.
+We extend on previous analysis in literature, which takes some upper degree percentile as influentials\cite{Influential} by analysing the higher-degree groups, 0-5,5-10,10-15,15-20, as  influential groups of various degree.
 
 
 
@@ -366,8 +370,8 @@ These results support the idea that influentials may not always play a large rol
 \section{Conclusion}
 
 In this report, it was found through simulation that an individual's role in global cascades depended more on the structure of interpersonal connections within a population rather than their degree of influence.
-Specifically, there are networks (Poisson, Advogato and Facebook) where the number of neighbours that an individual can directly influence does not play a significant role in contributing to their ability to initiate or contribute to a cascade.
-In other cases (such as scale-free), influential individuals play a much bigger role in initiating and spreading influence throughout the population. 
+Specifically, in low variation networks (Poisson) and real social networks (Advogato and Facebook), influentials did not appear to play a significant role in contributing to their ability to initiate or contribute to a cascade.
+In other cases, such as high variation networks (Scale-Free) influential individuals play a much bigger role in initiating and spreading influence throughout the population. 
 While our models are a simplification of real influence networks, the results suggest a reexamination of the influence hypothesis and motivates the exploration of other factors and attributes of influential individuals.
 
 
